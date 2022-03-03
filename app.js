@@ -1,11 +1,14 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-
+const NoteService = require("./services/NoteService");
 const app = express();
 
 app.get("/api", (req, res) => {
-  res.json({
-    message: "Welcome to the NODE API",
+  var message = "";
+  NoteService.getHello().then((bootResponse) => {
+    console.log(bootResponse.data);
+    message = bootResponse.data;
+    res.json({ message: message });
   });
 });
 
