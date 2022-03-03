@@ -1,0 +1,15 @@
+{
+    "name": "notes-app-node-backend",
+    "version": "1.0.0",
+    "description": "Authentication for springboot api",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "express": "^4.16.2",
+      "jsonwebtoken": "^8.1.0"
+    }
+  }
