@@ -1,14 +1,50 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+var cors = require("cors");
 const NoteService = require("./services/NoteService");
 const app = express();
 
-app.get("/api", (req, res) => {
-  var message = "";
+app.use(cors());
+app.use(express.json());
+app.get("/node-api", (req, res) => {
   NoteService.getHello().then((bootResponse) => {
     console.log(bootResponse.data);
-    message = bootResponse.data;
-    res.json({ message: message });
+    res.json({ message: bootResponse.data });
+  });
+});
+app.post("/node-api/user/add", async (req, res) => {
+  var user = req.body.user;
+  console.log("user by react", user);
+  // const salt = await bcrypt.genSalt(10);
+  // hashed password
+  // user.password = await bcrypt.hash(user.password, salt);
+  NoteService.createUser(user).then((bootResponse) => {
+    console.log("user by boot", bootResponse.data);
+    res.json({ message: bootResponse.data });
+  });
+});
+app.post("/node-api/user/login", async (req, res) => {
+  var user = req.body.user;
+  console.log("login user by react", user);
+  NoteService.findByUsername(user).then(async (bootResponse) => {
+    console.log("login user by boot", bootResponse.data);
+    const matchedUser = bootResponse.data;
+    console.log("matchedUser", matchedUser);
+    if (matchedUser.id === 0) {
+      res.json({ message: "invalid credentials" });
+    } else {
+      // const validPassword = await bcrypt.compare(
+      //   matchedUser.password,
+      //   user.password
+      // );
+      const validPassword = matchedUser.password === user.password;
+      if (validPassword) {
+        res.json({ user: bootResponse.data });
+      } else {
+        res.json({ message: "invalid credentials2" });
+      }
+    }
   });
 });
 
