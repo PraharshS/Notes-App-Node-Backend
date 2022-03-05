@@ -25,10 +25,9 @@ app.post("/node-api/user/add", async (req, res) => {
   });
 });
 app.post("/node-api/user/login", async (req, res) => {
-  var user = req.body.user;
+  var user = req.body;
   console.log("login user by react", user);
-  NoteService.findByUsername(user).then(async (bootResponse) => {
-    console.log("login user by boot", bootResponse.data);
+  NoteService.findByUsername(user.username).then(async (bootResponse) => {
     const matchedUser = bootResponse.data;
     console.log("matchedUser", matchedUser);
     if (matchedUser.id === 0) {
@@ -40,7 +39,17 @@ app.post("/node-api/user/login", async (req, res) => {
       // );
       const validPassword = matchedUser.password === user.password;
       if (validPassword) {
-        res.json({ user: bootResponse.data });
+        jwt.sign(
+          { user },
+          "secretkey",
+          { expiresIn: "3000s" },
+          (err, token) => {
+            res.json({
+              user: bootResponse.data,
+              token,
+            });
+          }
+        );
       } else {
         res.json({ message: "invalid credentials2" });
       }

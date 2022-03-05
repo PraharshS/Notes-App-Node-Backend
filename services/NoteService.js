@@ -7,8 +7,12 @@ var getHello = () => {
 var createUser = (user) => {
   return axios.post(NOTE_API_BASE_URL + "/add", user);
 };
-var findByUsername = (user) => {
-  return axios.post(NOTE_API_BASE_URL + "/findByUsername", user);
+var findByUsername = (username) => {
+  return axios.post(NOTE_API_BASE_URL + "/findByUsername", username, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 module.exports.getHello = getHello;
 module.exports.createUser = createUser;
