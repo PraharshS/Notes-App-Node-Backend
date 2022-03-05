@@ -57,16 +57,10 @@ app.post("/node-api/user/login", async (req, res) => {
   });
 });
 
-app.get("/api/notes", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretkey", (err, authData) => {
-    if (err) {
-      res.sendStatus(403);
-    } else {
-      res.json({
-        message: "Note Page....",
-        authData,
-      });
-    }
+app.post("/node-api/notes-by-user", (req, res) => {
+  console.log(req.body);
+  NoteService.findNotesByUser(req.body).then((bootResponse) => {
+    res.json({ notesData: bootResponse.data });
   });
 });
 
