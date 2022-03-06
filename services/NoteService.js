@@ -15,7 +15,9 @@ var findByUsername = (username) => {
     },
   });
 };
-
+var addNote = (note) => {
+  return axios.post(NOTE_API_BASE_URL, note);
+};
 var findNotesByUser = (user) => {
   return axios.post(NOTE_API_BASE_URL + "/get-all", user);
 };
@@ -26,4 +28,5 @@ module.exports.getHello = getHello;
 module.exports.createUser = createUser;
 module.exports.findByUsername = findByUsername;
 module.exports.findNotesByUser = findNotesByUser;
+module.exports.addNote = addNote;
 module.exports.deleteNoteById = deleteNoteById;

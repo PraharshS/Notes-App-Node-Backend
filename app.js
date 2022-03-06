@@ -56,7 +56,13 @@ app.post("/node-api/user/login", async (req, res) => {
     }
   });
 });
-
+app.post("/node-api/note", (req, res) => {
+  var newNote = req.body;
+  NoteService.addNote(newNote).then((bootResponse) => {
+    console.log("boot response", bootResponse.data);
+    res.json(bootResponse.data);
+  });
+});
 app.post("/node-api/notes-by-user", (req, res) => {
   console.log(req.body);
   NoteService.findNotesByUser(req.body).then((bootResponse) => {
