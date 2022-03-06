@@ -19,7 +19,11 @@ var findByUsername = (username) => {
 var findNotesByUser = (user) => {
   return axios.post(NOTE_API_BASE_URL + "/get-all", user);
 };
+var deleteNoteById = (noteId) => {
+  return axios.delete(NOTE_API_BASE_URL + "/" + noteId);
+};
 module.exports.getHello = getHello;
 module.exports.createUser = createUser;
 module.exports.findByUsername = findByUsername;
 module.exports.findNotesByUser = findNotesByUser;
+module.exports.deleteNoteById = deleteNoteById;

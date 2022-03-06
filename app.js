@@ -60,7 +60,13 @@ app.post("/node-api/user/login", async (req, res) => {
 app.post("/node-api/notes-by-user", (req, res) => {
   console.log(req.body);
   NoteService.findNotesByUser(req.body).then((bootResponse) => {
+    console.log(bootResponse.data);
     res.json({ notesData: bootResponse.data });
+  });
+});
+app.delete("/node-api/note/:id", (req, res) => {
+  NoteService.deleteNoteById(req.params.id).then((bootResponse) => {
+    res.json(bootResponse.data);
   });
 });
 
