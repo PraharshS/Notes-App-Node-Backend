@@ -63,6 +63,14 @@ app.post("/node-api/note", (req, res) => {
     res.json(bootResponse.data);
   });
 });
+app.put("/node-api/note/:id", (req, res) => {
+  var updatedNote = req.body;
+  var id = req.params.id;
+  console.log(updatedNote, id);
+  NoteService.updateNote(id, updatedNote).then((bootResponse) => {
+    res.json(bootResponse.data);
+  });
+});
 app.post("/node-api/notes-by-user", (req, res) => {
   console.log(req.body);
   NoteService.findNotesByUser(req.body).then((bootResponse) => {
