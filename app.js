@@ -7,12 +7,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.get("/node-api", (req, res) => {
-  NoteService.getHello().then((bootResponse) => {
-    console.log(bootResponse.data);
-    res.json({ message: bootResponse.data });
-  });
-});
+
 app.post("/node-api/user/add", async (req, res) => {
   var user = req.body.user;
   console.log("user by react", user);
@@ -30,8 +25,8 @@ app.post("/node-api/user/login", async (req, res) => {
   NoteService.findByUsername(user.username).then(async (bootResponse) => {
     const matchedUser = bootResponse.data;
     console.log("matchedUser", matchedUser);
-    if (matchedUser.id === 0) {
-      res.json({ message: "invalid credentials" });
+    if (matchedUser.id === null) {
+      res.json({ user: { id: 0 }, message: "invalid credentials" });
     } else {
       // const validPassword = await bcrypt.compare(
       //   matchedUser.password,
@@ -51,7 +46,7 @@ app.post("/node-api/user/login", async (req, res) => {
           }
         );
       } else {
-        res.json({ message: "invalid credentials2" });
+        res.json({ user: { id: 0 }, message: "invalid credentials" });
       }
     }
   });
@@ -84,21 +79,6 @@ app.delete("/node-api/note/:id", (req, res) => {
   });
 });
 
-app.post("/api/login", (req, res) => {
-  // Mock user
-  const user = {
-    id: 1,
-    username: "brad",
-    email: "brad@gmail.com",
-  };
-
-  jwt.sign({ user }, "secretkey", { expiresIn: "3000s" }, (err, token) => {
-    res.json({
-      token,
-    });
-  });
-});
-
 // FORMAT OF TOKEN
 // Authorization: Bearer <access_token>
 
@@ -122,4 +102,4 @@ function verifyToken(req, res, next) {
   }
 }
 
-app.listen(5000, () => console.log("Server started on port 5000"));
+app.listen(5000, () => console.log("NODE Server started on port 5000"));
