@@ -10,21 +10,20 @@ app.use(express.json());
 
 app.post("/node-api/user/add", async (req, res) => {
   var user = req.body.user;
-  console.log("user by react", user);
+
   const salt = await bcrypt.genSalt(10);
   // hashed password
   user.password = await bcrypt.hash(user.password, salt);
   NoteService.createUser(user).then((bootResponse) => {
-    console.log("user by boot", bootResponse.data);
     res.json({ message: bootResponse.data });
   });
 });
 app.post("/node-api/user/login", async (req, res) => {
   var user = req.body;
-  console.log("login user by react", user);
+
   NoteService.findByUsername(user.username).then(async (bootResponse) => {
     const matchedUser = bootResponse.data;
-    console.log("matchedUser", matchedUser);
+
     if (matchedUser.id === null) {
       res.json({ user: { id: 0 }, message: "invalid credentials" });
     } else {
@@ -53,22 +52,19 @@ app.post("/node-api/user/login", async (req, res) => {
 app.post("/node-api/note", (req, res) => {
   var newNote = req.body;
   NoteService.addNote(newNote).then((bootResponse) => {
-    console.log("boot response", bootResponse.data);
     res.json(bootResponse.data);
   });
 });
 app.put("/node-api/note/:id", (req, res) => {
   var updatedNote = req.body;
   var id = req.params.id;
-  console.log(updatedNote, id);
+
   NoteService.updateNote(id, updatedNote).then((bootResponse) => {
     res.json(bootResponse.data);
   });
 });
 app.post("/node-api/notes-by-user", (req, res) => {
-  console.log(req.body);
   NoteService.findNotesByUser(req.body).then((bootResponse) => {
-    console.log(bootResponse.data);
     res.json({ notesData: bootResponse.data });
   });
 });
@@ -101,4 +97,4 @@ function verifyToken(req, res, next) {
   }
 }
 
-app.listen(5000, () => console.log("NODE Server started on port 5000"));
+app.listen(5000, () => console.log("NODE SERVER STARTED"));
