@@ -11,9 +11,9 @@ app.use(express.json());
 app.post("/node-api/user/add", async (req, res) => {
   var user = req.body.user;
   console.log("user by react", user);
-  // const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(10);
   // hashed password
-  // user.password = await bcrypt.hash(user.password, salt);
+  user.password = await bcrypt.hash(user.password, salt);
   NoteService.createUser(user).then((bootResponse) => {
     console.log("user by boot", bootResponse.data);
     res.json({ message: bootResponse.data });
@@ -28,11 +28,10 @@ app.post("/node-api/user/login", async (req, res) => {
     if (matchedUser.id === null) {
       res.json({ user: { id: 0 }, message: "invalid credentials" });
     } else {
-      // const validPassword = await bcrypt.compare(
-      //   matchedUser.password,
-      //   user.password
-      // );
-      const validPassword = matchedUser.password === user.password;
+      const validPassword = await bcrypt.compare(
+        user.password,
+        matchedUser.password
+      );
       if (validPassword) {
         jwt.sign(
           { user },
